@@ -49,6 +49,17 @@ matrix im2col(image im, int size, int stride)
     matrix col = make_matrix(rows, cols);
 
     // TODO: 5.1 - fill in the column matrix
+    int r, c;
+    for (r = 0; r < rows; r++) {
+        for (c = 0; c < cols; c++) {
+            // find indices in the image
+            // TODO: include channel into row
+            int i = r / (size * size) * stride + (r % (size * size) - size / 2);
+            int j = c * stride + (r % size - size / 2);
+            // TODO this needs to take into account the number of channels
+            col.data[r * cols + c] = im.data[i * im.w + j];
+        }
+    }
 
     return col;
 }
