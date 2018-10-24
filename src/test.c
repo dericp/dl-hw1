@@ -38,6 +38,16 @@ void test_matrix_speed()
     printf("Transpose elapsed %lf sec\n", what_time_is_it_now() - start);
 }
 
+/*
+void test_convolutional_layer() {
+    float *data = calloc(18, sizeof(float));
+    for (int i = 0; i < 18; i++) {
+        data[i] = i;
+    }
+    image im = float_to_image(data, 3, 3, 2);
+    im2col(im, 2, 1);
+}*/
+
 void run_tests()
 {
     test_matrix_speed();

@@ -2,6 +2,7 @@
 #include <math.h>
 #include <assert.h>
 #include "uwnet.h"
+#include "image.h"
 
 // Add bias terms to a matrix
 // matrix m: partially computed output of layer
@@ -54,10 +55,17 @@ matrix im2col(image im, int size, int stride)
         for (c = 0; c < cols; c++) {
             // find indices in the image
             // TODO: include channel into row
-            int i = r / (size * size) * stride + (r % (size * size) - size / 2);
-            int j = c * stride + (r % size - size / 2);
-            // TODO this needs to take into account the number of channels
-            col.data[r * cols + c] = im.data[i * im.w + j];
+            // "center" of the
+            int i = c / (im.w / stride);
+            int j = c * stride;
+            i = i + (r % (size * size) - size / 2);
+            j = j + (r % size - size / 2);
+            if (size % 2 == 0) {
+                i += 1;
+                j += 1;
+            }
+            int channel = r / (size * size);
+            col.data[r * cols + c] = get_pixel(im, i, j, channel);
         }
     }
 
