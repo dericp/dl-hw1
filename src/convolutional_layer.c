@@ -54,18 +54,17 @@ matrix im2col(image im, int size, int stride)
     for (r = 0; r < rows; r++) {
         for (c = 0; c < cols; c++) {
             // find indices in the image
-            // TODO: include channel into row
-            // "center" of the
-            int i = c / (im.w / stride);
-            int j = c * stride;
-            i = i + (r % (size * size) - size / 2);
+            int i = c / ((im.w + (size - 1) / 2) / stride) * stride;
+            int j = c % ((im.w + (size - 1) / 2) / stride) * stride;
+            i = i + (r % (size * size) / size - size / 2);
             j = j + (r % size - size / 2);
             if (size % 2 == 0) {
                 i += 1;
                 j += 1;
             }
             int channel = r / (size * size);
-            col.data[r * cols + c] = get_pixel(im, i, j, channel);
+            //printf("r: %d, c: %d; i: %d, j: %d, c: %d\n", r, c, i, j, channel);
+            col.data[r * cols + c] = get_pixel(im, j, i, channel);
         }
     }
 
@@ -86,6 +85,21 @@ void col2im(matrix col, int size, int stride, image im)
 
     // TODO: 5.2 - add values into image im from the column matrix
 
+    int r, c;
+    for (r = 0; r < rows; r++) {
+        for (c = 0; c < cols; c++) {
+            int i = c / ((im.w + (size - 1) / 2) / stride) * stride;
+            int j = c % ((im.w + (size - 1) / 2) / stride) * stride;
+            i = i + (r % (size * size) / size - size / 2);
+            j = j + (r % size - size / 2);
+            if (size % 2 == 0) {
+                i += 1;
+                j += 1;
+            }
+            int channel = r / (size * size);
+            set_pixel(im, j, i, channel, col.data[r * cols + c] + get_pixel(im, j, i, channel));
+        }
+    }
 }
 
 // Run a convolutional layer on input
@@ -170,6 +184,12 @@ void backward_convolutional_layer(layer l, matrix prev_delta)
 void update_convolutional_layer(layer l, float rate, float momentum, float decay)
 {
     // TODO: 5.3 Update the weights, similar to the connected layer.
+    axpy_matrix(rate, l.db, l.b);
+    scal_matrix(momentum, l.db);
+
+    axpy_matrix(-decay, l.w, l.dw);
+    axpy_matrix(rate, l.dw, l.w);
+    scal_matrix(momentum, l.dw);
 }
 
 // Make a new convolutional layer

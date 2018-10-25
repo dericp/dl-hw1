@@ -40,18 +40,19 @@ void test_matrix_speed()
 }
 
 void test_convolutional_layer() {
-    std::cout << "hi" << std::endl;
-    float *data = calloc(18, sizeof(float));
-    for (int i = 0; i < 18; i++) {
+    int im_size = 5;
+    float *data = calloc(im_size * im_size, sizeof(float));
+    for (int i = 0; i < im_size * im_size; i++) {
         data[i] = i;
     }
-    image im = float_to_image(data, 3, 3, 2);
-    im2col(im, 2, 1);
+    image im = float_to_image(data, im_size, im_size, 2);
+    matrix temp = im2col(im, 3, 2);
+    print_matrix(temp);
 }
 
 void run_tests()
 {
-    test_matrix_speed();
+    //test_matrix_speed();
     test_convolutional_layer();
     //printf("%d tests, %d passed, %d failed\n", tests_total, tests_total-tests_fail, tests_fail);
 }
