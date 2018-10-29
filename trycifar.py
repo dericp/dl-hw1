@@ -11,7 +11,12 @@ def neural_net():
 
 def conv_net():
     # How many operations are needed for a forard pass through this network?
-    # Your answer: 
+    # Your answer: 1,108,480
+    # 32 * 32 * 3 * 8 * 3 * 3 / 1
+    # + 16 * 16 * 8 * 16 * 3 * 3 / 1
+    # + 8 * 8 * 16 * 32 * 3 / 1
+    # + 4 * 4 * 32 * 64 * 3 * 3 / 1
+    # + 256 * 10
     l = [   make_convolutional_layer(32, 32, 3, 8, 3, 1, LRELU),
             make_maxpool_layer(32, 32, 8, 3, 2),
             make_convolutional_layer(16, 16, 8, 16, 3, 1, LRELU),
