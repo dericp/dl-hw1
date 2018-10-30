@@ -22,6 +22,7 @@ def convnet():
     return make_net(l)
 
 def le_net():
+    # 98.8% train, 98.3% test
     l = [   make_convolutional_layer(28, 28,  1,  8, 3, 1, LRELU),
             make_convolutional_layer(28, 28,  8, 16, 3, 2, LRELU),
             make_convolutional_layer(14, 14, 16, 32, 3, 2, LRELU),
