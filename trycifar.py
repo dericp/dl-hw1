@@ -10,6 +10,7 @@ def neural_net():
     return make_net(l)
 
 def conv_net():
+    # 64.2% train, 60.5% test
     # How many operations are needed for a forard pass through this network?
     # Your answer: 1,108,480
     # 32 * 32 * 3 * 8 * 3 * 3 / 1

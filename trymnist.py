@@ -10,6 +10,7 @@ def neural_net():
     return make_net(l)
 
 def convnet():
+    # 99.1% train, 98.8% test
     l = [   make_convolutional_layer(28, 28,  1,  8, 3, 1, LRELU),
             make_maxpool_layer(28, 28, 8, 3, 2),
             make_convolutional_layer(14, 14,  8, 16, 3, 1, LRELU),
