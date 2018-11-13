@@ -10,7 +10,7 @@ def neural_net():
     return make_net(l)
 
 def conv_net():
-    # 64.2% train, 60.5% test
+    # The network below achieves 64.2% train and 60.5% test.
     # How many operations are needed for a forard pass through this network?
     # Your answer: 1,108,480
     # 32 * 32 * 3 * 8 * 3 * 3 / 1
@@ -32,20 +32,29 @@ def conv_net():
 def your_net():
     # Define your network architecture here. It should have 5 layers. How many operations does it need for a forward pass?
     # It doesn't have to be exactly the same as conv_net but it should be close.
+    # Networks I tried:
+    # 55.1% train, 50.0% test
     # l = [   make_connected_layer(3072, 3072, LRELU),
     #         make_connected_layer(3072, 10, SOFTMAX)]
-    # 55.1% train, 50.0% test
-    l = [   make_connected_layer(3072, 256, LRELU),
-            make_connected_layer(256, 512, LRELU),
-            make_connected_layer(512, 10, LRELU),
+    #
     # 55.0% train, 51.3% test
     # l = [   make_connected_layer(3072, 256, LRELU),
-    #         make_connected_layer(256, 256, LRELU),
-    #         make_connected_layer(256, 256, LRELU),
-    #         make_connected_layer(256, 256, LRELU),
-    #         make_connected_layer(256, 256, LRELU),
-    #         make_connected_layer(256, 10, SOFTMAX)]
-    # 55.9% train, 51.2% test
+    #         make_connected_layer(256, 512, LRELU),
+    #         make_connected_layer(512, 10, LRELU),
+    #
+    # The network defined below achieves 56.3% train and 51.3% test accuracies.
+    # This is in comparison to the 64.2% train and 60.5% test accuracies that
+    # conv_net achieves.
+    # From these experiments, it seems that convolutional neural networks make
+    # better use of their parameters than fully connected layers. This is
+    # because convolutions allow for weight sharing---we can use the same
+    # parameters across multiple inputs. Also, convolutions are built with
+    # spatial bias which is crucial when processing images.
+    l = [   make_connected_layer(3072, 256, LRELU),
+            make_connected_layer(256, 256, LRELU),
+            make_connected_layer(256, 256, LRELU),
+            make_connected_layer(256, 512, LRELU),
+            make_connected_layer(512, 10, SOFTMAX)]
     return make_net(l)
 
 print("loading data...")
